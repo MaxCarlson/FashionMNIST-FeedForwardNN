@@ -15,11 +15,11 @@ testset = torchvision.datasets.FashionMNIST('./data',
     transform=ToTensor()
     )
 
-InputSize = 784
-Neurons = 1024
-batchSize = 30
-epochs = 2
-lr = 0.001
+epochs      = 30
+InputSize   = 784
+Neurons     = 1024
+batchSize   = 30
+lr          = 0.001
 
 # dataloaders
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
@@ -41,22 +41,21 @@ model = torch.nn.Sequential(
     )
 
 loss_fn = torch.nn.CrossEntropyLoss()
+optim = torch.optim.SGD(model.parameters(), lr=lr, momentum=0)
 
 if __name__ == '__main__':
 
     for e in range(epochs):
-        for train_features, train_labels in trainloader:
+        for features, target in trainloader:
     
-            a = train_features.numpy()
-            x = torch.reshape(train_features, (30, 784))
+            a = features.numpy()
+            x = torch.reshape(features, (30, 784))
             a = x.numpy()
 
             pred = model(x)
-    
-            loss = loss_fn(pred, train_labels)
-            model.zero_grad()
-            loss.backward()
 
-            with torch.no_grad():
-                for param in model.parameters():
-                    param -= lr * param.grad
+            optim.zero_grad()
+            loss = loss_fn(pred, target)
+            loss.backward()
+            optim.step()
+            
