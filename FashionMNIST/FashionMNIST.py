@@ -29,22 +29,6 @@ testset = torchvision.datasets.FashionMNIST('./data',
     transform=ToTensor()
     )
 
-#x = trainset.train_data.numpy()
-#y = trainset.train_labels.numpy()
-#xp = copy.deepcopy(x)
-#yp = copy.deepcopy(y)
-
-# Pollute data
-#for i, c in enumerate(classes):
-#    idx = np.where(y == i)
-#    vals = x[idx]
-#    vals = vals[0:int(len(vals)/100)]
-#    for j in range(len(classes)):
-#        if j == i:
-#            continue
-#        xp = np.append(xp, vals, axis=0)
-#        yp = np.append(yp, [j for _ in range(len(vals))])
-
 class PollutedDataset(torch.utils.data.Dataset):
     def __init__(self, features, targets):
         self.features = torch.from_numpy(features).float()
@@ -56,6 +40,23 @@ class PollutedDataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         return self.features[index], self.targets[index]
 
+# Pollute training data
+#
+#x = trainset.train_data.numpy()
+#y = trainset.train_labels.numpy()
+#xp = copy.deepcopy(x)
+#yp = copy.deepcopy(y)
+#
+#
+#for i, c in enumerate(classes):
+#    idx = np.where(y == i)
+#    vals = x[idx]
+#    vals = vals[0:int(len(vals)/100)]
+#    for j in range(len(classes)):
+#        if j == i:
+#            continue
+#        xp = np.append(xp, vals, axis=0)
+#        yp = np.append(yp, [j for _ in range(len(vals))])
 #trainset = PollutedDataset(xp, yp)
 
 x = testset.test_data.numpy()
@@ -64,6 +65,7 @@ xp = copy.deepcopy(x)
 
 # Circular Shift right-shift test images by 2
 #xp = np.roll(xp, 2, axis=2)
+
 # Vertical Shift pixels of test images down by 2
 xp = np.roll(xp, 2, axis=1)
 
