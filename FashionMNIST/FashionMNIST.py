@@ -64,8 +64,8 @@ xp = copy.deepcopy(x)
 
 # Circular Shift right-shift test images by 2
 #xp = np.roll(xp, 2, axis=2)
-# Vertical Shift pixels of test images up by 2
-xp = np.roll(xp, -2, axis=1)
+# Vertical Shift pixels of test images down by 2
+xp = np.roll(xp, 2, axis=1)
 
 testset = PollutedDataset(xp, y)
 
